@@ -1,0 +1,33 @@
+#image: 
+#    docker:latest
+#stages:
+#    - build
+#    - test
+#    - cleanup
+#
+#build:
+#    stage: build
+#    tags:
+#        - docker
+#    script:
+#    - docker build ./api
+#
+#
+#test:
+#    stage: test
+#    image:
+#        docker/compose:latest
+#    tags:
+#        - docker
+#    script:
+#        - docker-compose up --abort-on-container-exit --quiet-pull
+#
+#cleanup:
+#    stage: cleanup
+#    image:
+#        docker/compose:latest
+#    tags:
+#        - docker
+#    script:
+#        - docker-compose down
+#    when: always
