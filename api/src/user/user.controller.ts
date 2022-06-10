@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Controller, Get, Post } from '@nestjs/common';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
@@ -9,11 +10,5 @@ export class UserController {
   @Get()
   findAll(): Promise<UserEntity[]> {
     return this.userService.findAll();
-  }
-
-  @Post()
-  create(body: any): Promise<UserEntity> {
-    console.log(body);
-    return this.userService.createUser(body);
   }
 }

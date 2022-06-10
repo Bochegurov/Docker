@@ -1,7 +1,7 @@
 const connectionOptions = {
   type: 'mariadb',
   host: 'api_db',
-  port: 3306,
+  port: '3306',
   username: 'root',
   password: 'root',
   database: 'test',

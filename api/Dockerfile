@@ -4,6 +4,6 @@ WORKDIR /usr/src/app/backend
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm install -g npm@8.12.1 --save --legacy-peer-deps
 
 COPY . .
