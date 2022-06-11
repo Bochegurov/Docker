@@ -4,6 +4,6 @@ WORKDIR /usr/src/app/frontend
 
 COPY package*.json ./
 
-RUN npm install --save --legacy-peer-deps
+RUN npm install --legacy-peer-deps
 
 COPY . .

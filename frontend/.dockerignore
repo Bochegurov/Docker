@@ -1,12 +1,4 @@
-/node_modules
-.git/
-/dist
-.gitignore/
-/data
-/etc
-
-#Возможно удалю
-# See http://help.github.com/ignore-files/ for more about ignoring files.
+.git
 
 # Compiled output
 /dist
