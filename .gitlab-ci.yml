@@ -1,0 +1,43 @@
+image: docker:latest
+
+stages:
+  - build
+  - deploy
+
+docker-build:
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+  stage: build
+  script:
+  - docker login -u root -p $TOKEN_REGISTRY gitlab.local:5000
+  - docker build -t gitlab.local:5000/root/docker/frontend:$CI_COMMIT_SHA ./frontend
+  - docker push gitlab.local:5000/root/docker/frontend:$CI_COMMIT_SHA
+  - docker build -t  gitlab.local:5000/root/docker/api:$CI_COMMIT_SHA ./api
+  - docker push gitlab.local:5000/root/docker/api:$CI_COMMIT_SHA
+  - docker build -t  gitlab.local:5000/root/docker/nginx:$CI_COMMIT_SHA ./nginx
+  - docker push gitlab.local:5000/root/docker/nginx:$CI_COMMIT_SHA
+  tags:
+  - docker
+
+deploy:
+  stage: deploy
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://192.168.0.103:2376
+    DOCKER_TLS_VERIFY: 1
+    DOCKER_CERT_PATH: "/certs"
+  script:
+    - mkdir -p $DOCKER_CERT_PATH
+    - echo "$TLSCACERT" > $DOCKER_CERT_PATH/ca.pem
+    - echo "$TLSCERT" > $DOCKER_CERT_PATH/cert.pem
+    - echo "$TLSKEY" > $DOCKER_CERT_PATH/key.pem
+    - docker login -u root -p $TOKEN_REGISTRY gitlab.local:5000
+    - docker stack deploy -c docker-compose.yml env_name --with-registry-auth
+    - rm -rf $DOCKER_CERT_PATH
+  environment:
+    name: main
+    url:  https://192.168.0.103
+  only:
+    - main
+  tags:
+    - docker
